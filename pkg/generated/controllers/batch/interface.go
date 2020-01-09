@@ -20,6 +20,7 @@ package batch
 
 import (
 	v1 "github.com/rancher/wrangler-api/pkg/generated/controllers/batch/v1"
+	v1beta1 "github.com/rancher/wrangler-api/pkg/generated/controllers/batch/v1beta1"
 	"github.com/rancher/wrangler/pkg/generic"
 	informers "k8s.io/client-go/informers/batch"
 	clientset "k8s.io/client-go/kubernetes"
@@ -27,6 +28,7 @@ import (
 
 type Interface interface {
 	V1() v1.Interface
+	V1beta1() v1beta1.Interface
 }
 
 type group struct {
@@ -47,4 +49,8 @@ func New(controllerManager *generic.ControllerManager, informers informers.Inter
 
 func (g *group) V1() v1.Interface {
 	return v1.New(g.controllerManager, g.client.BatchV1(), g.informers.V1())
+}
+
+func (g *group) V1beta1() v1beta1.Interface {
+	return v1beta1.New(g.controllerManager, g.client.BatchV1beta1(), g.informers.V1beta1())
 }
